@@ -10,9 +10,9 @@ public class Main {
         // для МЕТОДІВ при наслідуванні завжди посилається на конструктор
         // тобто відбувається run time (dynamic) binding
         // тобто polymorphism
-        parentVariable.printInstanceVariable();   // print parent variable
-        childVariable_1.printInstanceVariable();   // print child variable
-        childVariable_2.printInstanceVariable();   // print  child variable
+        parentVariable.printInstanceVariable();   // print parent method
+        childVariable_1.printInstanceVariable();   // print child method
+        childVariable_2.printInstanceVariable();   // print  child method
 
         System.out.println();
         System.out.println("************************************");
