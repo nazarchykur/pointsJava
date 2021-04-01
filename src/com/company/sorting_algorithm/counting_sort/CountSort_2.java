@@ -8,7 +8,7 @@ public class CountSort_2 {
         System.out.println("array = " + Arrays.toString(array));
 
         countingSort(array);
-//        System.out.println("array = " + Arrays.toString(array));
+        System.out.println("array = " + Arrays.toString(array));
     }
 
     private static void countingSort(int[] array) {
@@ -17,15 +17,13 @@ public class CountSort_2 {
         for (int num: array) {
             numCounts[num]++;
         }
-        int[] sorted = new int[array.length];
         int index = 0;
         for (int i = 0; i < numCounts.length; i++) {
             for (int j = 0; j < numCounts[i]; j++) {
-                sorted[index] = i;
+                array[index] = i;
                 index++;
             }
         }
-        System.out.println(Arrays.toString(sorted));
     }
 
     private static int maxValue(int[] array) {
