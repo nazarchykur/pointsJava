@@ -1,0 +1,31 @@
+Frequently Asked Questions
+Q #1) How does Selection sort work?
+
+Answer: Selection sort works by maintaining two sub-arrays. The minimum element from the unsorted
+subarray is placed in its proper position in a sorted sub-array. Then the second-lowest element is
+placed in its proper position. This way, the entire array is sorted by selecting a minimum element during each iteration.
+
+Q #2) What is the complexity of the Selection sort?
+
+Answer: The overall complexity of selection sort is O (n2), thereby making it the algorithm
+that is inefficient on larger data sets. Other sorting techniques are more efficient.
+
+Q #3) What are the Advantages and Disadvantages of Selection sort?
+
+Answer: Selection sort is the in-place sorting technique and thus it does not require additional
+storage to store intermediate elements.
+
+It works efficiently on smaller data structures as well as the data sets that are almost sorted.
+
+The major disadvantage of the selection sort technique is that it performs very poorly as the
+size of the data structure increases. It not only becomes slower but also decreases efficiency.
+
+Q #4) How many swaps are there in the Selection sort?
+
+Answer: The selection sort technique takes the minimum number of swaps. For the best case,
+when the array is sorted, the number of swaps in the selection sort is 0.
+
+Q #5) Is selection sort faster than Insertion sort?
+
+Answer: Insertion sort is faster and more efficient as well as stable. Selection sort is faster
+only for smaller data sets and partially sorted structures.
