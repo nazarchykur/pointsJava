@@ -17,7 +17,7 @@ public class LowerBoundedWildcards {
         //java.lang.Integer - 2
         
         System.out.println();
-//        printNumbers(list4); // compile error
+//        printNumbers(list4); // compile error => because we set List<? super Integer> 
         
         System.out.println();
         printNumbers(list3);

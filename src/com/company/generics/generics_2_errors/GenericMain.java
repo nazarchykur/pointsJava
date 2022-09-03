@@ -32,6 +32,19 @@ public class GenericMain {
         //Using a generic type as a raw type might be a way to work around a particular compiler error, but you 
         // lose the type checking that generics provides, so it is not recommended.
 
+        // 5
+        Animal cat = new Cat();
+
+        AnimalHouse<? extends Animal> animalHouse = new AnimalHouse<>();
+//        animalHouse.setAnimal(cat); // compile error to because of required type
+        
+        // 6 
+        Cat cat1 = new Cat();
+        AnimalHouse<Cat> animalHouse1 = new AnimalHouse<>(); // Write-only object 
+        animalHouse1.setAnimal(cat1);
+//        animalHouse1.getAnimal(); // will be ignored
+        
+        
 
     }
 }
