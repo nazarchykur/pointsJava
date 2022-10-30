@@ -303,9 +303,9 @@ public class WhyGeneric {
     }
 
     // Не можна прочитати елемент із контейнера з wildcard ? super, крім об'єкта класу Object
-    public static <T> T getFirst(List<? super T> list) {
-        return list.get(0); // compile-time error
-    }
+//    public static <T> T getFirst(List<? super T> list) {
+////        return list.get(0); // compile-time error
+//    }
 
     // тут буде ок, бо Object   
     public static <T> Object getFirst2(List<? super T> list) {
@@ -324,7 +324,7 @@ public class WhyGeneric {
     public static void reverse(List<?> list) {
         List<Object> tmp = new ArrayList<Object>(list);
         for (int i = 0; i < list.size(); i++) {
-            list.set(i, tmp.get(list.size() - i - 1)); // compile-time error
+//            list.set(i, tmp.get(list.size() - i - 1)); // compile-time error
         }
     }
 
