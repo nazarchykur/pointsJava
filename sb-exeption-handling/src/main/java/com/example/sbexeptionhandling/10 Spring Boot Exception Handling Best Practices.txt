@@ -1,0 +1,242 @@
+10 Spring Boot Exception Handling Best Practices
+
+https://climbtheladder.com/10-spring-boot-exception-handling-best-practices/
+
+    Spring Boot provides several options to deal with exceptions. 
+    In this article, we'll cover 10 best practices to handle exceptions in Spring Boot.
+    
+    Spring Boot provides a great way to handle exceptions. By default, it provides a generic error page that shows the 
+    stack trace and the reason for the exception. However, this is not very user-friendly. In this article, we will 
+    discuss 10 best practices for exception handling in Spring Boot.
+    
+    
+1. Use @ControllerAdvice for global exception handling
+
+    @ControllerAdvice is a Spring annotation that provides a mechanism to treat exceptions globally. It can be used with 
+    any Spring component, but it’s most commonly used with @RestController and @ControllerAdvice.
+    
+    When you use @ControllerAdvice, all exceptions thrown by the controller are handled by the advice. This includes 
+    exceptions thrown by methods annotated with @RequestMapping, @ExceptionHandler, or @InitBinder.
+    
+    The @ControllerAdvice annotation has two attributes:
+        • basePackages: The base package of the controllers. All controllers in this package and its sub-packages are included.
+        
+        • assignableTypes: The specific classes of controllers. Only these controllers are included.
+        
+        
+    You can use either attribute, but not both. If you don’t specify either attribute, all controllers are included.
+    
+    
+    
+2. Define a common base package for Controller classes
+
+    When you have a large number of Controller classes, it can be difficult to keep track of which exceptions are handled 
+    by each class. By defining a common base package, you can easily see which exceptions are handled by each class, 
+    and this makes it easier to maintain your codebase.
+    
+    Furthermore, when you’re defining exception handling logic in your Controller classes, it’s often helpful to reuse 
+    existing ExceptionHandlers. By keeping your Controller classes in the same base package, you can easily reuse these 
+    ExceptionHandlers without having to duplicate code.
+   
+   
+3. Global Exception handler methods
+
+    Exception handler methods are like a catch block in Java. They allow you to handle exceptions in a centralized way 
+    and provide a consistent response to the client, whether it’s an error message or some other data.
+    
+    If you don’t have global exception handler methods, then each controller will need to handle exceptions individually. 
+    This can lead to duplicated code and inconsistent responses.
+    
+    It’s much better to have a single place to handle all exceptions, so that’s why global exception handler methods 
+    are a best practice.
+ 
+ 
+4. Catch exceptions using @ExceptionHandler annotation
+
+    The @ExceptionHandler annotation is used to specify a method that will handle a particular type of exception. 
+    This is useful if you want to centralize your exception handling logic in one place.
+    
+    For example, suppose you have a controller with two methods, and each method can throw different types of exceptions. 
+    You can use the @ExceptionHandler annotation on a single method to handle both types of exceptions.
+    
+            @ExceptionHandler(Exception.class)
+            public void handleException(Exception e) {
+                // …
+            }
+    
+    This method will be invoked whenever any exception is thrown by either of the controller methods.
+    
+    One advantage of using the @ExceptionHandler annotation is that it makes your code more readable and maintainable. 
+    It’s also easier to unit test because you can mock the exception and test the handler method separately.
+    
+  
+5. Customize Response body
+
+    When an exception is thrown, the default response body includes the stack trace. This is not only unnecessary 
+    information for the client, but it can also be a security risk. By customizing the response body, you can include 
+    only the information that’s necessary and relevant to the client, while keeping the rest of the information hidden.
+    
+    To customize the response body, you need to create a class that implements the HandlerExceptionResolver interface. 
+    In this class, you can specify the status code, headers, and body of the response.
+    
+    For example, here’s how you would customize the response body for a NotFoundException:
+        @Override
+        public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            Map body = new LinkedHashMap<>();
+            body.put(“timestamp”, LocalDateTime.now());
+            body.put(“message”, “Not found”);
+            
+            return new ModelAndView(“error”, body);
+        }
+
+
+6. Return response entity in json format
+
+    When an exception is thrown, the default response entity returned by Spring Boot is in html format. This can be 
+    problematic for two reasons.
+    
+    Firstly, if the client making the request is not expecting html format, it can cause issues. 
+    Secondly, even if the client is expecting html format, the html response returned by Spring Boot can be very basic and uninformative.
+    
+    Returning response entity in json format solves both of these problems. Firstly, it means that the client will 
+    always receive the data in the format they are expecting. Secondly, it allows you to return more informative error 
+    messages in the json response.
+    
+    To return response entity in json format, you need to configure Spring Boot to use a different message converter. 
+    One option is to use the Jackson2JsonMessageConverter. This message converter will automatically convert any 
+    response entity with a @ResponseBody annotation into json format.
+
+
+7. Specify the HTTP Status code
+
+    When an exception is thrown, the default response code is 500 Internal Server Error. This status code indicates that 
+    something went wrong on the server side, and the client cannot do anything about it.
+    
+    While this might be accurate in some cases, most of the time it’s not. For example, if a user tries to access a 
+    resource that doesn’t exist, it would make more sense to return a 404 Not Found status code. This way, the client 
+    knows that the issue is not on their end, and they can take appropriate action (e.g., try a different resource).
+    
+    Similarly, if a user tries to submit a form with invalid data, it would be more helpful to return a 
+    400 Bad Request status code. This way, the client knows that the issue is on their end, and they can fix it 
+    before resubmitting the form.
+    
+    Specifying the HTTP Status code is important because it helps the client understand what went wrong and what they 
+    can do about it. It also makes your API more self-documenting, which is always a good thing.
+    
+Status code	Meaning
+
+ 1xx Informational	 
+     100	Continue
+     101	Switching protocols
+     102	Processing
+     103	Early Hints
+         
+ 2xx Succesful	 
+     200	OK
+     201	Created
+     202	Accepted
+     203 	Non-Authoritative Information
+     204	No Content
+     205	Reset Content
+     206	Partial Content
+     207	Multi-Status
+     208	Already Reported
+     226	IM Used
+  	 
+ 3xx Redirection	 
+     300	Multiple Choices
+     301	Moved Permanently
+     302	Found (Previously "Moved Temporarily")
+     303	See Other
+     304	Not Modified
+     305	Use Proxy
+     306	Switch Proxy
+     307	Temporary Redirect
+     308	Permanent Redirect
+  	 
+ 4xx Client Error	 
+     400	Bad Request
+     401	Unauthorized
+     402	Payment Required
+     403	Forbidden
+     404	Not Found
+     405	Method Not Allowed
+     406	Not Acceptable
+     407	Proxy Authentication Required
+     408	Request Timeout
+     409	Conflict
+     410	Gone
+     411	Length Required
+     412	Precondition Failed
+     413	Payload Too Large
+     414	URI Too Long
+     415	Unsupported Media Type
+     416	Range Not Satisfiable
+     417	Expectation Failed
+     418	I'm a Teapot
+     421	Misdirected Request
+     422	Unprocessable Entity
+     423	Locked
+     424	Failed Dependency
+     425	Too Early
+     426	Upgrade Required
+     428	Precondition Required
+     429	Too Many Requests
+     431	Request Header Fields Too Large
+     451	Unavailable For Legal Reasons
+  	 
+ 5xx Server Error	 
+     500	Internal Server Error
+     501	Not Implemented
+     502	Bad Gateway
+     503	Service Unavailable
+     504	Gateway Timeout
+     505	HTTP Version Not Supported
+     506	Variant Also Negotiates
+     507	Insufficient Storage
+     508	Loop Detected
+     510	Not Extended
+     511	Network Authentication Required
+ 
+8. Handle specific Exceptions
+
+    When you’re handling exceptions, you want to be as specific as possible. This way, you can give your users the most 
+    accurate information about what went wrong and how they can fix it.
+    
+    For example, let’s say you have a controller that handles two different types of Exceptions: 
+    InvalidArgumentException and ResourceNotFoundException.
+    
+    If you were to handle these Exception in the same way, you would end up with a generic error message that doesn’t 
+    really help your users. However, if you handle each Exception separately, you can give your users more specific 
+    instructions on what went wrong and how to fix it.
+    
+    This is just one example of why it’s important to handle specific Exceptions. By doing so, you can ensure that your 
+    users receive the most accurate and helpful information possible.
+ 
+ 
+9. Create custom exceptions
+
+    Creating custom exceptions gives you more control over the error handling process. By creating your own exception 
+    class, you can add additional information that might be helpful for debugging, such as the time of the error or 
+    the user’s ID.
+    
+    Custom exceptions also make it easier to handle errors in a specific way. For example, you can choose to log all 
+    instances of a particular custom exception, or send an email notification to the administrator.
+    
+    Overall, custom exceptions provide a more flexible and customizable approach to exception handling, which can be 
+    very useful in a Spring Boot application.
+   
+   
+10. Add logs to trace application flow
+    When an exception is thrown, it can be difficult to determine the root cause of the problem without looking at the 
+    application logs. By adding logs at key points in the code, you can get a better understanding of what went wrong and why.
+    
+    For example, let’s say you have a controller that handles requests for a user’s profile. If an exception is thrown 
+    when trying to retrieve the user’s data from the database, you can add a log statement in the controller to print 
+    out the SQL query that was executed. This will give you valuable information about what went wrong and help you fix the issue.
+    
+    Adding logs is a simple way to improve the spring boot exception handling in your application. It’s important to 
+    remember, however, that too many logs can clutter the output and make it more difficult to find the relevant information. 
+    Therefore, it’s important to strike a balance and only add logs when they will be genuinely useful.
+                                        
