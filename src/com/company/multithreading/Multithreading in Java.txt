@@ -1,0 +1,47 @@
+Multithreading in Java
+
+https://www.mygreatlearning.com/blog/multithreading-in-java/#:~:text=In%20Java%2C%20Multithreading%20refers%20to,and%20share%20the%20process%20resources.
+
+
+Multithreading in Java - An Introduction
+    In Java, Multithreading refers to a process of executing two or more threads simultaneously for maximum utilization 
+    of the CPU. A thread in Java is a lightweight process requiring fewer resources to create and share the process resources.
+    
+    Multithreading and Multiprocessing are used for multitasking in Java, but we prefer multithreading over multiprocessing. 
+    This is because the threads use a shared memory area which helps to save memory, and also, the content-switching 
+    between the threads is a bit faster than the process.
+    
+    Few more advantages of Multithreading are:
+        > Multithreading saves time as you can perform multiple operations together.
+        > The threads are independent, so it does not block the user to perform multiple operations at the same time 
+            and also, if an exception occurs in a single thread, it does not affect other threads.
+    
+    
+    Life Cycle of a Thread
+    There are five states a thread has to go through in its life cycle. This life cycle is controlled by JVM 
+    (Java Virtual Machine). These states are:
+        1. New
+        2. Runnable
+        3. Running
+        4. Non-Runnable (Blocked)
+        5. Terminated
+    
+    1. New
+        In this state, a new thread begins its life cycle. This is also called a born thread. The thread is in the new 
+        state if you create an instance of Thread class but before the invocation of the start() method.
+    
+    2. Runnable
+        A thread becomes runnable after a newly born thread is started. In this state, a thread would be executing its task.
+    
+    3. Running
+        When the thread scheduler selects the thread then, that thread would be in a running state.
+    
+    4. Non-Runnable (Blocked)
+        The thread is still alive in this state, but currently, it is not eligible to run.
+    
+    5. Terminated
+        A thread is terminated due to the following reasons:
+            > Either its run() method exists normally, i.e., the thread’s code has executed the program.
+            > Or due to some unusual errors like segmentation fault or an unhandled exception.
+            
+        A thread that is in a terminated state does not consume ant cycle of the CPU.
